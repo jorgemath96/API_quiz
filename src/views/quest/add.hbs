@@ -1,0 +1,43 @@
+<div class="container p-4">
+  <div class="row">
+    <div class="col col-4 mx-auto">
+      <form action="/api/add" method="post">
+        <div class="mb-3 text-center">
+          <select class="form-select bg-info" aria-label="Default select example" name="quest">
+            {{#each quests}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="ask" class="form-label">Ask</label>
+          <input type="text" class="form-control" id="ask" name="ask" placeholder="Ask">
+        </div>
+        <div class="mb-3">
+          <label for="expression" class="form-label">Expression</label>
+          <input type="text" class="form-control" id="expression" name="expression" placeholder="Expression">
+        </div>
+        <div class="mb-3">
+          <label for="r1" class="form-label"> Option 1 (Correct Answer)</label>
+          <input type="text" class="form-control" id="r1" name="r1" placeholder="Option 1">
+        </div>
+        <div class="mb-3">
+          <label for="r2" class="form-label"> Option 2</label>
+          <input type="text" class="form-control" id="r2" name="r2" placeholder="Option 2">
+        </div>
+        <div class="mb-3">
+          <label for="r3" class="form-label"> Option 3</label>
+          <input type="text" class="form-control" id="r3" name="r3" placeholder="Option 3">
+        </div>
+        <div class="mb-3">
+          <label for="r4" class="form-label"> Option 4</label>
+          <input type="text" class="form-control" id="r4" name="r4" placeholder="Response 4">
+        </div>
+
+        <div class="mb-3 text-center">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

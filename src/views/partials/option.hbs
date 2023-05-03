@@ -1,0 +1,25 @@
+{{#with (lookup opciones num)}}
+<fieldset>
+  {{#each this as |opcion|}}
+  <input type="Radio" name="{{@../index}}" value="{{@index}}">
+  <label>
+    <h4>
+    <article>
+      <dl>
+        <dd> {{opcion}} </dd>
+      </dl>
+    </article>
+    </h4>
+  </label>
+  <br>
+  {{/each}}
+  {{#unless @last}}
+  <button class="btn btn-info btn-block w-80" type="button" data-target="#carouselControls" data-slide="next"
+    name="dato{{@../index}}">Siguiente</button>
+  {{/unless}}
+</fieldset>
+{{#if @last}}
+<button class="btn btn-info btn-block w-80" type="submit">Ver Puntaje</button>
+{{/if}}
+<div class="w-100"></div>
+{{/with}}

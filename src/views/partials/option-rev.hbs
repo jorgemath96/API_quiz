@@ -1,0 +1,48 @@
+{{#with (lookup opciones num)}}
+<fieldset>
+  {{#each this as |opcion|}}
+  <button class="btn btn-block {{opcion.[1]}}" type="button">
+    <h5>
+      <article>
+        <dl>
+          <dd> {{opcion.[0]}} </dd>
+        </dl>
+      </article>
+    </h5>
+  </button>
+  <br>
+  {{/each}}
+</fieldset>
+<hr>
+<div class="row">
+  {{#unless @last}}
+  {{#if @first}}
+  <div class="col mx-auto col-8">
+    <button class="btn btn-info btn-block" type="button" data-target="#carouselControls" data-slide="next"
+      name="dato{{@../index}}">Siguiente</button>
+  </div>
+  {{/if}}
+  {{#unless @first}}
+  <div class="col mx-auto col-6">
+    <button class="btn btn-info btn-block" type="button" data-target="#carouselControls" data-slide="prev"
+      name="dato{{@../index}}">Anterior</button>
+  </div>
+  <div class="col mx-auto col-6">
+    <button class="btn btn-info btn-block" type="button" data-target="#carouselControls" data-slide="next"
+      name="dato{{@../index}}">Siguiente</button>
+  </div>
+  {{/unless}}
+  {{/unless}}
+
+  {{#if @last}}
+  <div class="col mx-auto col-6">
+    <button class="btn btn-info btn-block" type="button" data-target="#carouselControls" data-slide="prev"
+      name="dato{{@../index}}">Anterior</button>
+  </div>
+  <div class="col mx-auto col-6">
+    <button class="btn btn-success  btn-block" type="submit"> Ir a Perfil</button>
+  </div>
+  {{/if}}
+</div>
+<div class="w-100"></div>
+{{/with}}
