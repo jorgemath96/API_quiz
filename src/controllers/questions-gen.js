@@ -30,17 +30,14 @@ class Questions {
   }
 
   async genasks(index, quest) {
-    const asks = {};
+    const asks = [];
     for (let i = 0; i < index.length; i++) {
       const j = parseInt(index[i]);
       let [ask] = await pool.query('SELECT * FROM ' + quest + ' WHERE id = ?;', [j]);
-      console.log(ask);
       ask = await this.ltex(ask);
-      console.log("despues", ask);
-      const askid = "q" + (i + 1).toString();
-      asks[askid] = ask;
+      await asks.push(ask);
     }
-    return asks;
+    return {"quiz": asks};
   }
 }
 

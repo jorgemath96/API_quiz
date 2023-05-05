@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    {{#each quiz}}
+    <div class="col col-4 p-4">
+      <div class="card bg-dark text-white mb-3">
+        <article>
+          <dl>
+            {{this.id}}
+          </dl>
+          <dl>
+            <dd>{{this.ask}}</dd>
+          </dl>
+          <dl>
+            <dd>{{this.expression}}</dd>
+          </dl>
+          <dl>
+            <dd>{{this.r1}}</dd>
+          </dl>
+          <dl>
+            <dd>{{this.r2}}</dd>
+          </dl>
+          <dl>
+            <dd>{{this.r3}}</dd>
+          </dl>
+          <dl>
+            <dd>{{this.r4}}</dd>
+          </dl>
+        </article>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
