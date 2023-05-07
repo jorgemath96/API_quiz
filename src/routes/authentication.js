@@ -36,13 +36,13 @@ router.post('/', async (req, res) => {
       maxAge: 1000 * 60 * 60,
       path: '/'
     });
-    res.cookie('myAppCookie', serialized, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 1000 * 60
-
-    });
+    // res.cookie('myAppCookie', serialized, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: 'lax',
+    //   maxAge: 1000 * 60
+    // });
+    res.setHeader('Set-Cookie', serialized);
     return res.json({ message: 'Autenticación exitosa' });
   } catch (e) {
     console.log(e);
