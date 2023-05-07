@@ -4,11 +4,14 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
+const { isAuthenticated } = require('./lib/helpers.js');
 
 // Motor de vistas hbs
 const exphbs = require('express-handlebars');
+const cookieParser = require('cookie-parser');
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs.engine({
     defaultLayout: 'main',
@@ -25,8 +28,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(cookieParser());
 app.use(morgan('dev'));
-app. use((req, res, next) => {
+app.use(flash());
+app.use((req, res, next) => {
     next();
 });
 

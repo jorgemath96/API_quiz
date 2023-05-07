@@ -11,13 +11,18 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "cookie": "^0.5.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-handlebars": "^7.0.7",
+    "express-jwt": "^8.4.1",
     "express-mysql": "^0.0.1",
     "handlebars": "^4.7.7",
+    "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "utils": "^0.3.1"
