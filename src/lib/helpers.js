@@ -1,7 +1,5 @@
 const bcrypt = require('bcryptjs');
 const helpers = {};
-const jwt = require('express-jwt');
-const secret = process.env.JWT_SECRET;
 
 helpers.encryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
