@@ -1,15 +1,12 @@
 const { Router } = require('express');
 const router = Router();
-const Questions = require('../controllers/questions-gen');
-const questions = new Questions();
+const pool = require('../controllers/database.js');
+const Resume = require('../lib/resume.js');
+const resume = new Resume();
 
-router.get('/questions', async (req, res) => {
-  const n = 10;
-  const quest = 'quest1';
-  const index = await questions.genindex(n);
-  console.log(index);
-  const asks = await questions.genasks(index, quest);
-  res.json(asks);
+router.get('/', async (req, res) => {
+  res.json(resume.getResume());
 });
+
 
 module.exports = router;

@@ -8,6 +8,8 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const { isAuthenticated } = require('./lib/helpers.js');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const uploadDir = 'src/uploads';
 
 // Motor de vistas hbs
 const exphbs = require('express-handlebars');
@@ -25,17 +27,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware
 app.use((req, res, next) => {
-  
+
   next();
 });
 app.use(cookieParser());
-app.use(cors({
-  origin: ['http://localhost:3000'],
-  methods: 'GET, POST, PUT, DELETE, OPTIONS',
-  allowedHeaders: 'Content-Type, Authorization, X-Requested-With, Accept, Origin',
-  preflightContinue: false,
-  credentials: true,
-}));
+app.use(cors());
+// app.use(cors({
+//   origin: [process.env.FRONTEND_URL],
+//   methods: 'GET, POST, PUT, DELETE, OPTIONS',
+//   allowedHeaders: 'Content-Type, Authorization, X-Requested-With, Accept, Origin',
+//   preflightContinue: false,
+//   credentials: true,
+//   httpOnly: true,
+//   secure: true,
+//   sameSite: 'none',
+// }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,14 +53,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   // app.locals.success = req.flash('success', 'El elemento fue eliminado');
   // app.locals.message = req.flash('message', 'El usuario o la contraseña son incorrectos');
-  app.locals.user = req.user;
+  app.locals.id = req.body.id;
   next();
 });
+const storage = multer.diskStorage({
+  destination: uploadDir,
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage });
+
+
+
 // Rutas
 app.use('/login', require('./routes/authentication.js'));
 app.use('/api', require('./routes/questions.js'));
-app.use('/admin', require('./routes/add-question.js'));
-app.use('/list', require('./routes/quiz.js'));
+app.get('/admin', (req, res) => {
+  res.render('proof/proof')
+})
+app.post('/admin', upload.single('file'), (req, res, next) => {
+  res.send('Archivo subido con éxito');
+});
+//app.use('/list', require('./routes/list.js'));
 // app.use('/', (req, res) => {
 //     res.redirect('/api/questions');
 // });
