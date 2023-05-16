@@ -20,10 +20,9 @@ CREATE TABLE `schools` (
 
 -- Asks Table
 CREATE TABLE `asks` (
-  `num` INT(11) NOT NULL PRIMARY KEY,
+  `num` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `idt` INT(11) NOT NULL,
   `ask` VARCHAR(100) NOT NULL,
-  `expr` VARCHAR(255) NOT NULL,
   `r1` VARCHAR(255) NOT NULL,
   `r2` VARCHAR(255) NOT NULL,
   `r3` VARCHAR(255) NOT NULL,
@@ -31,7 +30,7 @@ CREATE TABLE `asks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Insert Users
-LOAD DATA LOCAL INFILE '/home/bluehat/Proyectos/Node_JS/APIs/05-Proof/src/uploads/Users.csv' INTO TABLE `users` FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
+-- LOAD DATA LOCAL INFILE '/home/bluehat/Proyectos/Node_JS/APIs/05-Proof/src/uploads/Users.csv' INTO TABLE `users` FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
 
 -- Insert Topics
 LOAD DATA LOCAL INFILE '/home/bluehat/Proyectos/Node_JS/APIs/05-Proof/src/uploads/Topics.csv' INTO TABLE `topics` FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';

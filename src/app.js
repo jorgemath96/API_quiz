@@ -10,6 +10,9 @@ const { isAuthenticated } = require('./lib/helpers.js');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const uploadDir = 'src/uploads';
+const session = require('express-session');
+const flash = require('express-flash');
+
 
 // Motor de vistas hbs
 const exphbs = require('express-handlebars');
@@ -45,7 +48,12 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(flash());
+app.use(session({
+  secret: 'my-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(flash());
 
 
 
@@ -69,12 +77,13 @@ const upload = multer({ storage });
 // Rutas
 app.use('/login', require('./routes/authentication.js'));
 app.use('/api', require('./routes/questions.js'));
-app.get('/admin', (req, res) => {
-  res.render('proof/proof')
-})
-app.post('/admin', upload.single('file'), (req, res, next) => {
-  res.send('Archivo subido con éxito');
-});
+app.use('/admin', require('./routes/admin.js'));
+// app.get('/admin', (req, res) => {
+//   res.render('proof/proof')
+// })
+// app.post('/admin', upload.single('file'), (req, res, next) => {
+//   res.send('Archivo subido con éxito');
+// });
 //app.use('/list', require('./routes/list.js'));
 // app.use('/', (req, res) => {
 //     res.redirect('/api/questions');

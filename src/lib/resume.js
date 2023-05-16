@@ -156,6 +156,58 @@ class Resume {
   getResume() {
     return this.data;
   }
+
+  defineIdt(sid, tid, stid) {
+    if (tid < 10) {
+      tid = `0${tid}`;
+    }
+    if (stid < 10) {
+      stid = `0${stid}`;
+    }
+    let num = `${sid}${tid}${stid}`;
+    return parseInt(num);
+  }
+
+  async getSubtopic(data) {
+    let idt;
+    let array = [];
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].topic.length; j++) {
+        for (let sub in data[i].topic[j].subtopic) {
+          idt = await this.defineIdt(i + 1, j + 1, sub);
+          array.push({ 'idt': idt, 'st': data[i].topic[j].subtopic[sub] });
+        }
+      }
+    }
+    return array;
+  }
+
+  async getSubtopic2 (data) {
+    let subtop = [];
+    let array = [];
+    for (let i = 0; i < data.length; i++) {
+      data[i]['s'] = i + 1;
+      for (let j = 0; j < data[i].topic.length; j++) {
+        data[i].topic[j]['t'] = j + 1;
+        subtop = [];
+        for (let sub in data[i].topic[j].subtopic) {
+          let num = data[i].topic[j].id;
+          console.log("este es el num", num);
+          let csub = data[i].topic[j].subtopic[sub]
+          let csb = {};
+          csb['st'] = num;
+          csb[num] = csub;
+          console.log("este es el csb", csb);
+          subtop.push(csb);
+        }
+        delete data[i].topic[j].subtopic;
+        data[i].topic[j]['subtopic'] = subtop;
+      }
+    }
+    console.log("este es el data", data);
+    array = data;
+    return array;
+  }
 }
 
 module.exports = Resume;

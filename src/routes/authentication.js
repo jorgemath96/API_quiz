@@ -4,6 +4,24 @@ const helpers = require('../lib/helpers.js');
 const pool = require('../controllers/database.js');
 const jwt = require('jsonwebtoken');
 
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  console.log(authHeader);
+  if (token == null) {
+    return res.status(401).json({ message: 'No autorizado' });
+  }
+  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.status(403).json({ message: 'Token inválido' });
+    }
+    req.user = user;
+    next();
+  }); 
+};
+
+
 router.get('/', (req, res) => {
   res.render('auth/login');
 });
@@ -18,24 +36,18 @@ router.post('/', async (req, res) => {
     if (typeof (rows) === 'undefined') {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     };
-    const isMatch = await helpers.matchPassword(password, rows.password);
+    // const isMatch = await helpers.matchPassword(password, rows.password);
+    const isMatch = (password === rows.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
+    const token = jwt.sign(
+      { id: rows.id, username: rows.username },
+      process.env.SECRET_KEY,
+      { expiresIn: '2m' }
+    );
+    console.log(token);
     const user = { id: rows.id, username: rows.username, fname: rows.fname, lname: rows.lname};
-    console.log("este es el user", user)
-    const header = { alg: 'HS256', typ: 'JWT' };
-    const secretKey = process.env.SECRET_KEY;
-    const token = jwt.sign({ user }, secretKey, { header });
-    const cookieOptions = {
-      httpOnly: true,
-      secure: true,
-      maxAge: 3600,
-      sameSite: 'none',
-    }
-    const cookieHeader = `jwt=${token}; ${Object.entries(cookieOptions).map(([key, value]) => `${key}=${value}`).join('; ')}`
-    res.setHeader('Set-Cookie', cookieHeader);
-    res.cookie('jwt', token, cookieOptions);
     return res.json({ message: 'Bienvenido', user: { id: rows.id, user: rows.username, name: rows.name, last: rows.last } });
   } catch (e) {
     console.log(e);
@@ -74,3 +86,20 @@ router.post('/signup', async (req, res) => {
 });
 
 module.exports = router;
+
+
+
+
+// console.log("este es el user", user)
+//     const header = { alg: 'HS256', typ: 'JWT' };
+//     const secretKey = process.env.SECRET_KEY;
+//     const token = jwt.sign({ user }, secretKey, { header });
+//     const cookieOptions = {
+//       httpOnly: true,
+//       secure: true,
+//       maxAge: 3600,
+//       sameSite: 'none',
+//     }
+//     const cookieHeader = `jwt=${token}; ${Object.entries(cookieOptions).map(([key, value]) => `${key}=${value}`).join('; ')}`
+//     res.setHeader('Set-Cookie', cookieHeader);
+//     res.cookie('jwt', token, cookieOptions);
