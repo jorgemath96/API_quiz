@@ -1,0 +1,25 @@
+<div class="container p-4">
+  <div class="row">
+    <div class="col col-6 mx-auto">
+      <form action="/admin/add/question" method="post">
+        <div class="mb-3 text-center">
+          <label for="dropdown">Selecciona una opción:</label>
+          <select id="dropdown" name="idt">
+            {{#each datos}}
+            <option value={{this.idt}}>{{this.idt}}: {{this.st}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="r3" class="form-label"> Option 3</label>
+          <input type="text" class="form-control" id="r3" name="r3" placeholder="Option 3" requiered>
+        </div>
+        <div class="mb-3">
+          <label for="r4" class="form-label"> Option 4</label>
+          <input type="text" class="form-control" id="r4" name="r4" placeholder="Option 4" requiered>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

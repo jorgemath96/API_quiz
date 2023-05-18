@@ -18,7 +18,7 @@ const verifyToken = (req, res, next) => {
     }
     req.user = user;
     next();
-  }); 
+  });
 };
 
 
@@ -33,25 +33,35 @@ router.post('/', async (req, res) => {
   console.log(req.body)
   const [rows] = await pool.query('SELECT * FROM ' + duser + ' WHERE username = ?', [username]);
   try {
+    console.log(rows);
     if (typeof (rows) === 'undefined') {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     };
     // const isMatch = await helpers.matchPassword(password, rows.password);
-    const isMatch = (password === rows.password);
-    if (!isMatch) {
+    console.log("este es el password: ", password);
+    if (password !== rows.password) {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
     const token = jwt.sign(
       { id: rows.id, username: rows.username },
       process.env.SECRET_KEY,
-      { expiresIn: '2m' }
+      { expiresIn: '1h' }
     );
-    console.log(token);
-    const user = { id: rows.id, username: rows.username, fname: rows.fname, lname: rows.lname};
-    return res.json({ message: 'Bienvenido', user: { id: rows.id, user: rows.username, name: rows.name, last: rows.last } });
+    console.log("Este es el jwt", token);
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      maxAge: 3600,
+      sameSite: 'none',
+    }
+    const cookieHeader = `jwt=${token}; ${Object.entries(cookieOptions).map(([key, value]) => `${key}=${value}`).join('; ')}`
+    res.header('auth-token', token);
+    res.setHeader('Set-Cookie', cookieHeader);
+    const user = { id: rows.id, username: rows.username, fname: rows.fname, lname: rows.lname };
+    return res.json({ message: 'Bienvenido', user: { id: user.id, user: user.username, name: user.name, last: user.last } });
   } catch (e) {
     console.log(e);
-    res.redirect('/login');
+    res.json({ message: 'Error' });
   }
 });
 
@@ -63,10 +73,10 @@ router.post('/signup', async (req, res) => {
   const { username, password, fname, lname } = req.body;
   const { school, grade, group, cicle } = req.body;
   const dusers = process.env.DB_NAME + '.users';
-  
+
   const [rows] = await pool.query('SELECT username FROM ' + dusers + ' WHERE username = ?', [username]);
 
-  if (typeof(rows) === 'undefined') {
+  if (typeof (rows) === 'undefined') {
     const newUser = {
       username,
       password,

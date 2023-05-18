@@ -17,6 +17,11 @@ class AQuestion {
     }
     return array;
   }
+
+  async getIdt(s, t, st) {
+    let idt = resume.defineIdt(s, t, st);
+    return idt;
+  }
 }
 
 module.exports = AQuestion;

@@ -34,17 +34,17 @@ app.use((req, res, next) => {
   next();
 });
 app.use(cookieParser());
-app.use(cors());
-// app.use(cors({
-//   origin: [process.env.FRONTEND_URL],
-//   methods: 'GET, POST, PUT, DELETE, OPTIONS',
-//   allowedHeaders: 'Content-Type, Authorization, X-Requested-With, Accept, Origin',
-//   preflightContinue: false,
-//   credentials: true,
-//   httpOnly: true,
-//   secure: true,
-//   sameSite: 'none',
-// }));
+// app.use(cors());
+app.use(cors({
+  origin: [process.env.FRONTEND_URL],
+  methods: 'GET, POST, PUT, DELETE, OPTIONS',
+  allowedHeaders: 'Content-Type, Authorization, X-Requested-With, Accept, Origin',
+  preflightContinue: false,
+  credentials: true,
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',
+}));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

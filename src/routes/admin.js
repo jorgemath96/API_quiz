@@ -14,11 +14,25 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+const fs = require('fs');
+const e = require('connect-flash');
 
 router.get('/question', async (req, res) => {
   const data = await resume.getResume();
   const array = await resume.getSubtopic2(data);
   res.json(array);
+});
+
+router.get('/add/users', (req, res) => {
+  const directoryPath = 'src/uploads';
+  fs.readdir(directoryPath, function(err, files) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Error al leer directorio' });
+    }
+  });
+  const ls = files.map(file => file);
+  res.render('manage/users/add');
 });
 
 router.get('/add/question', async (req, res) => {
@@ -29,8 +43,13 @@ router.get('/add/question', async (req, res) => {
 });
 
 router.post('/add/question', async (req, res) => {
+  let idt;
   let { s, t, st, level, ask, r1, r2, r3, r4 } = req.body;
-  let idt = await aQuestion.getIdt(s, t, st);
+  if (typeof(s) === 'undefined') {
+    idt = req.body.idt;
+  } else {
+    idt = await aQuestion.getIdt(s, t, st);
+  }
   idt = parseInt(String(idt) + level)
   let newQuestion = [idt, ask, r1, r2, r3, r4];
   try {
@@ -40,7 +59,7 @@ router.post('/add/question', async (req, res) => {
     console.log(error);
     req.flash('error', 'Error al agregar pregunta');
   }
-  res.redirect('/admin/add/question');
+  res.status(200).redirect('/admin/add/question');
 });
 
 router.get('/upload', (req, res) => {
